@@ -15,16 +15,93 @@ This technical note investigates the aerodynamic feasibility of forward-swept wi
 ---
 
 ## Key Results
-* **Validation:** VLM calibrated against NASA TP 3414 X-29 flight data at Mach 0.6.
-* **Accuracy:** Resolved Oswald efficiency ($e_{corrected} = 0.851$) with a marginal 2.56% error.
-* **Efficiency Delta:** FSW configurations demonstrated a **3.14% reduction in induced drag** (~1.26% total drag reduction) over geometrically mirrored aft-swept baselines.
+
+| Metric | Value |
+|--------|-------|
+| Validation dataset | NASA TP 3414 (Grumman X-29, Mach 0.6) |
+| Corrected span efficiency | $e_{corrected} = 0.851$ |
+| Validation error | 2.56% against NASA reference |
+| FSW Oswald efficiency | $e = 0.854$ |
+| ASW Oswald efficiency | $e = 0.832$ |
+| Induced drag reduction (FSW vs ASW) | 3.14% |
+| Total drag reduction | ~1.26% |
 
 ---
 
 ## Installation & Dependencies
 
-### Pre-requisites
-To run this pipeline, you must have **Python 3.10+** installed. Computational modules depend on the following libraries:
-
+Python 3.10 or higher is required. All core dependencies can be installed via pip:
 ```bash
-pip install numpy scipy matplotlib pandas
+pip install aerosandbox numpy scipy matplotlib pandas
+```
+
+### Optional: OpenVSP & SU2
+
+For high-fidelity mesh generation and RANS verification, ensure `OpenVSP 3.x` and `SU2 v8.0` are available in your system path. These are not required to run the VLM pipeline but are used for higher-fidelity cross-validation.
+
+- [OpenVSP Download](http://openvsp.org/)
+- [SU2 Download](https://su2code.github.io/)
+
+---
+
+## Usage & Execution
+
+### 1. NASA X-29 VLM Validation
+
+Verifies solver accuracy against NASA TP 3414 flight data and generates spanwise lift distribution and drag polar comparisons:
+```bash
+python3 Aeroscript_FSW/x29_vlm_validation.py
+```
+
+Expected outputs:
+- Spanwise lift distribution comparison (FSW vs ASW vs elliptical ideal)
+- Drag polar overlay against NASA reference data
+- Console report of $e_{inviscid}$, $k_v$, $e_{corrected}$, and validation error
+
+### 2. Boeing 737-800 Trade Study
+
+Runs the aerodynamic trade study comparing FSW and ASW configurations of identical planform geometry:
+```bash
+python3 Aeroscript_FSW/fsw_analysis.py --num_sims 100
+```
+
+Expected outputs:
+- Induced drag polar comparison at cruise ($C_L = 0.5$)
+- Oswald efficiency summary for FSW and ASW configurations
+- Aerodynamic efficiency comparison plot (L/D$_i$ vs $\alpha$)
+
+---
+
+## Repository Structure
+```
+fsw-aero-vlm/
+├── Aeroscript_FSW/
+│   ├── x29_vlm_validation.py    # X-29 solver validation against NASA TP 3414
+│   └── fsw_analysis.py          # 737-800 FSW vs ASW trade study
+├── data/
+│   └── x29_reference.csv        # NASA TP 3414 reference values
+├── figures/                     # Generated output figures
+└── README.md
+```
+
+---
+
+## Citation
+
+If you use this code in your research, please cite both the repository and the associated paper:
+```bibtex
+@misc{zhan2026fswvlm,
+  author       = {Zhan, Peixuan},
+  title        = {fsw-aero-vlm: VLM Simulation Pipeline for Forward-Swept Wing Aerodynamic Analysis},
+  year         = {2026},
+  publisher    = {Zenodo},
+  doi          = {10.5281/zenodo.XXXXXXX},
+  url          = {https://doi.org/10.5281/zenodo.XXXXXXX}
+}
+```
+
+---
+
+## License
+
+This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
