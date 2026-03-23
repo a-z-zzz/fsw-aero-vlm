@@ -14,6 +14,12 @@ This technical note investigates the aerodynamic feasibility of forward-swept wi
 
 ---
 
+## Methdology
+
+The Vortex Lattice Method approximates the lifting surface as a discrete array of panels, each with a horseshoe vortex whose strength Γ is determined by enforcing a no-penetration boundary condition at the panel control point. The velocity induced by each vortex is computed via the Biot-Savart law, allowing the full spanwise downwash distribution to be resolved across all panels. By the Kutta-Joukowski theorem, the local aerodynamic force per unit span is L' = ρV∞Γ, which, when decomposed into freestream-aligned components, returns lift and induced drag. The latter arises from the rear tilt of the local vector by the induced angle αᵢ = w/V∞, giving Di' ≈ L' × αᵢ for the small angles typical of cruising flight conditions. Total forces are recovered by spanwise integration across all panel contributions, and the Oswald efficiency factor is back-solved from the resulting CL and CDi values using the Prandtl drag polar. Because VLM assumes inviscid, incompressible potential flow, a viscous correction is applied in post-processing following the method of Nita and Scholz (2018).
+
+---
+
 ## Key Results
 
 | Metric | Value |
