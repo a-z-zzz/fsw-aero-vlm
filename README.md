@@ -81,12 +81,11 @@ Expected outputs:
 ## Repository Structure
 ```
 fsw-aero-vlm/
-├── Aeroscript_FSW/
-│   ├── x29_vlm_validation.py    # X-29 solver validation against NASA TP 3414
-│   └── fsw_analysis.py          # 737-800 FSW vs ASW trade study
+├── x29_vlm_validation.py    # X-29 solver validation against NASA TP 3414
 ├── data/
-│   └── x29_reference.csv        # NASA TP 3414 reference values
-├── figures/                     # Generated output figures
+│   └── x29_vlm_drag_polar_mar22.csv      # FSW Drag Polar raw numbers
+│   └── reg_asw_vlm_drag_polar_mar22.csv  # ASW Drag Polar raw numbers
+├── figures_x29/                     # Generated output figures
 └── README.md
 ```
 
