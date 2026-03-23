@@ -2,7 +2,7 @@
 A non-linear Vortex Lattice Method (VLM) Python simulation pipeline for evaluating forward-swept wing (FSW) aerodynamics. Used in conjunction with a physics-based NASA X-29 validation and trade study tooling utilizing AeroSandbox.
 
 # Boeing 737-800 FSW Simulation Pipeline
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.XXXXXXX.svg)](https://doi.org/10.5281/zenodo.XXXXXXX)
+[![DOI](https://img.shields.io/badge/DOI-pending-lightgrey.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 A validated Vortex Lattice Method (VLM) solver and simulation suite for auditing the aerodynamic feasibility of Forward-Swept Wing (FSW) configurations on commercial transport airframes.
@@ -91,12 +91,12 @@ fsw-aero-vlm/
 If you use this code in your research, please cite both the repository and the associated paper:
 ```bibtex
 @misc{zhan2026fswvlm,
-  author       = {Zhan, Peixuan},
+  author       = {Zhan, Andy},
   title        = {fsw-aero-vlm: VLM Simulation Pipeline for Forward-Swept Wing Aerodynamic Analysis},
   year         = {2026},
   publisher    = {Zenodo},
   doi          = {10.5281/zenodo.XXXXXXX},
-  url          = {https://doi.org/10.5281/zenodo.XXXXXXX}
+  note         = {DOI pending. Repository available at https://github.com/a-z-zzz/fsw-aero-vlm}
 }
 ```
 
