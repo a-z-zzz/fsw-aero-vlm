@@ -5,12 +5,10 @@ A non-linear Vortex Lattice Method (VLM) Python simulation pipeline for evaluati
 [![DOI](https://img.shields.io/badge/DOI-pending-lightgrey.svg)]()
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
-A validated Vortex Lattice Method (VLM) solver and simulation suite for auditing the aerodynamic feasibility of Forward-Swept Wing (FSW) configurations on commercial transport airframes.
-
 ---
 
 ## Abstract
-This technical note investigates the aerodynamic feasibility of forward-swept wing (FSW) configurations for a Boeing 737-800 class aircraft using a validated Vortex Lattice Method (VLM). The solver was calibrated against Grumman X-29 flight test data, yielding a corrected span efficiency of $e = 0.851$ within 2.56% of the NASA TP 3414 reference value. At cruise conditions ($C_L = 0.5$), the FSW configuration produces an Oswald efficiency of $e = 0.854$ compared to $e = 0.832$ for a geometrically identical aft-swept baseline. 
+This technical note investigates the aerodynamic feasibility of simulating forward-swept wing (FSW) configurations using a Vortex Lattice Method (VLM). The solver was calibrated against Grumman X-29 flight-test data, yielding a corrected span efficiency of e = 0.851, within 2.56% of the NASA TP 3414 reference value. At cruise conditions (C_L= 0.5), the FSW configuration produces an Oswald efficiency of e = 0.854 compared to e = 0.832 for a geometrically identical aft-swept baseline, corresponding to a 3.14% reduction in induced drag. Since induced drag accounts for approximately 40% of total cruise drag, this yields a net drag reduction of roughly 1.24%. When combined with estimates of natural laminar flow (NLF) benefits characteristic of forward-swept geometries, this efficiency gain suggests a meaningful improvement in the baseline lift-to-drag ratio for commercial transport applications.
 
 ---
 
