@@ -18,7 +18,7 @@ except ImportError:
     print("Could not import from x29_vlm_validation.")
     sys.exit(1)
 
-OUTPUT_DIR = "Journal_Export"
+OUTPUT_DIR = "figures_x29/journal_figures"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # Set matplotlib to use a monochromatic style for legends
@@ -117,16 +117,16 @@ def _plot_total_ld(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str, 
 
 if __name__ == "__main__":
     print("Loading CSV data...")
-    csv_dir = "Aeroscript_results_FSW/x29_validation_final"
-    if not os.path.exists(csv_dir):
-        csv_dir = "Aeroscript_results_FSW/x29_validation"
-        
-    df_fsw = pd.read_csv(os.path.join(csv_dir, 'x29_vlm_drag_polar.csv'))
-    df_conv = pd.read_csv(os.path.join(csv_dir, 'conventional_vlm_drag_polar.csv'))
+    csv_dir = "data"
+    
+    df_fsw = pd.read_csv(os.path.join(csv_dir, 'x29_vlm_drag_polar_mar22.csv'))
+    df_conv = pd.read_csv(os.path.join(csv_dir, 'reg_asw_vlm_drag_polar_mar22.csv'))
 
     e_inv, e_corr, _ = calc_oswald_from_polar(df_fsw)
 
-    print("Generating Journal Plots (fig 1, 5, 6) in 'Journal_Export'...")
+    output_dir = "figures_x29/journal_figures"
+    os.makedirs(output_dir, exist_ok=True)
+    print(f"Generating Journal Plots (fig 1, 5, 6) in '{output_dir}'...")
     _plot_polar_validation(df_fsw, e_inv, e_corr, "fig1_drag_polar_validation_Journal")
     _plot_polar_fsw_asw(df_fsw, df_conv, "fig5_drag_polar_comparison_Journal")
     _plot_total_ld(df_fsw, df_conv, "fig6_total_LD_ratio_Journal")

@@ -6,4 +6,4 @@ Legend entries for this figure:
 Info Box / Annotations:
 ----------------------------------------
 $C_L$$_α$ = 0.0781 /deg
-       = 4.477 /rad
+       = 4.474 /rad

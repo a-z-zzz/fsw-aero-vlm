@@ -5,8 +5,8 @@ Legend entries for this figure:
 
 Info Box / Annotations:
 ----------------------------------------
-FSW L/Dᵢ Advantage: +4.3%
+FSW L/Dᵢ Advantage: +3.9%
 (Average over α = 4-10° cruise regime)
 
-FSW Oswald e = 0.854
-ASW Oswald e = 0.832
+FSW Oswald e = 0.748
+ASW Oswald e = 0.758

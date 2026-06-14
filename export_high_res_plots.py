@@ -20,8 +20,10 @@ except ImportError:
     print("Could not import from x29_vlm_validation. Ensure you run this from the root workspace directory.")
     sys.exit(1)
 
-OUTPUT_DIR = "HighRes_Export"
+OUTPUT_DIR = "figures_x29/highres_figures"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
+LEGEND_DIR = "figures_x29/legends"
+os.makedirs(LEGEND_DIR, exist_ok=True)
 
 def extract_and_save_legend(ax, base_filename, info_text=None):
     # Ensure no legend is drawn on the plot
@@ -31,7 +33,7 @@ def extract_and_save_legend(ax, base_filename, info_text=None):
 
     handles, labels = ax.get_legend_handles_labels()
     
-    txt_filename = os.path.join(OUTPUT_DIR, f"{base_filename}_legend.txt")
+    txt_filename = os.path.join(LEGEND_DIR, f"{base_filename}_legend.txt")
     with open(txt_filename, 'w') as f:
         f.write("Legend entries for this figure:\n")
         f.write("-" * 40 + "\n")
@@ -170,7 +172,8 @@ def _plot_spanwise_vlm(fsw_airplane, asw_airplane, alpha_deg: float, base_name: 
     plt.savefig(os.path.join(OUTPUT_DIR, f"{base_name}.png"), dpi=600, bbox_inches='tight')
     plt.close()
 
-def _plot_ldi_comparison(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str):
+def _plot_ldi_comparison(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str,
+                          e_corr_fsw: float = None, e_corr_conv: float = None):
     fig, ax = plt.subplots(figsize=(12, 9))
 
     df_fp = df_fsw[df_fsw['alpha_deg'] > 0].copy()
@@ -198,10 +201,13 @@ def _plot_ldi_comparison(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name:
     ax.grid(True, alpha=0.3)
     ax.set_xlim(0, 16)
 
+    # Use live-computed Oswald efficiencies, not hardcoded constants
+    fsw_e_str = f'{e_corr_fsw:.3f}' if e_corr_fsw is not None else 'N/A'
+    conv_e_str = f'{e_corr_conv:.3f}' if e_corr_conv is not None else 'N/A'
     note = (f'FSW L/Dᵢ Advantage: +{avg_adv:.1f}%\n'
             f'(Average over α = 4-10° cruise regime)\n\n'
-            f'FSW Oswald e = 0.854\n'
-            f'ASW Oswald e = 0.832')
+            f'FSW Oswald e = {fsw_e_str}\n'
+            f'ASW Oswald e = {conv_e_str}')
 
     extract_and_save_legend(ax, base_name, info_text=note)
 
@@ -244,20 +250,25 @@ def _plot_total_ld(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str, 
     plt.close()
 
 
-def _plot_polar_fsw_asw(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str):
+def _plot_polar_fsw_asw(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: str,
+                         e_corr_fsw: float = None, e_corr_conv: float = None):
     fig, ax = plt.subplots(figsize=(12, 9))
 
     df_fp = df_fsw[df_fsw['CL'] > 0.05].copy()
     df_cp = df_conv[df_conv['CL'] > 0.05].copy()
 
+    # Use live-computed Oswald efficiencies in legend labels
+    fsw_e_str = f'{e_corr_fsw:.3f}' if e_corr_fsw is not None else '?'
+    conv_e_str = f'{e_corr_conv:.3f}' if e_corr_conv is not None else '?'
+
     ax.plot(df_fp['CL_squared'], df_fp['CDi_corrected'],
             color='blue', linestyle='-', linewidth=3,
             marker='o', markersize=8, markerfacecolor='blue', markeredgecolor='white',
-            label=f'FSW (X-29, Λ = -29.3°) — e = 0.854', zorder=3)
+            label=f'FSW (X-29, Λ = -29.3°) — e = {fsw_e_str}', zorder=3)
     ax.plot(df_cp['CL_squared'], df_cp['CDi_corrected'],
             color='red', linestyle='--', linewidth=3,
             marker='s', markersize=8, markerfacecolor='red', markeredgecolor='white',
-            label=f'ASW (Λ = +29.3°) — e = 0.832', zorder=2)
+            label=f'ASW (Λ = +29.3°) — e = {conv_e_str}', zorder=2)
 
     cdi_fsw_05 = _interp_cdi_at_cl(df_fsw, 0.5)
     cdi_asw_05 = _interp_cdi_at_cl(df_conv, 0.5)
@@ -293,26 +304,35 @@ def _plot_polar_fsw_asw(df_fsw: pd.DataFrame, df_conv: pd.DataFrame, base_name: 
 
 if __name__ == "__main__":
     print("Loading CSV data...")
-    csv_dir = "Aeroscript_results_FSW/x29_validation_final"
-    if not os.path.exists(csv_dir):
-        csv_dir = "Aeroscript_results_FSW/x29_validation"
-        
-    df_fsw = pd.read_csv(os.path.join(csv_dir, 'x29_vlm_drag_polar.csv'))
-    df_conv = pd.read_csv(os.path.join(csv_dir, 'conventional_vlm_drag_polar.csv'))
+    csv_dir = "data"
+    
+    df_fsw = pd.read_csv(os.path.join(csv_dir, 'x29_vlm_drag_polar_mar22.csv'))
+    df_conv = pd.read_csv(os.path.join(csv_dir, 'reg_asw_vlm_drag_polar_mar22.csv'))
 
-    e_inv, e_corr, _ = calc_oswald_from_polar(df_fsw)
+    # Compute Oswald efficiency for both configurations from the live CSV data
+    e_inv_fsw, e_corr_fsw, _ = calc_oswald_from_polar(df_fsw)
+    e_inv_conv, e_corr_conv, _ = calc_oswald_from_polar(df_conv)
+
+    print(f"  FSW  e_inv={e_inv_fsw:.4f}  e_corr={e_corr_fsw:.4f}")
+    print(f"  ASW  e_inv={e_inv_conv:.4f}  e_corr={e_corr_conv:.4f}")
 
     print("Generating pure CSV-based plots at 600 DPI (no legends, no info boxes)...")
-    _plot_polar_validation(df_fsw, e_inv, e_corr, "fig1_drag_polar_validation_HighRes")
+    _plot_polar_validation(df_fsw, e_inv_fsw, e_corr_fsw, "fig1_drag_polar_validation_HighRes")
     _plot_lift_curve(df_fsw, "fig2_lift_curve_HighRes")
     _plot_total_ld(df_fsw, df_conv, "fig6_total_LD_ratio_HighRes")
-    _plot_polar_fsw_asw(df_fsw, df_conv, "fig5_drag_polar_comparison_HighRes")
+    _plot_ldi_comparison(df_fsw, df_conv, "fig4_fsw_vs_conventional_HighRes",
+                          e_corr_fsw=e_corr_fsw, e_corr_conv=e_corr_conv)
+    _plot_polar_fsw_asw(df_fsw, df_conv, "fig5_drag_polar_comparison_HighRes",
+                         e_corr_fsw=e_corr_fsw, e_corr_conv=e_corr_conv)
 
-    print("Building geometries and running single-point VLM for spanwise plots...")
-    x29_ap = build_x29()
-    conv_ap = build_conventional()
-
-    _plot_spanwise_theoretical(x29_ap, conv_ap, 10.0, "fig3_spanwise_lift_distribution_HighRes")
-    _plot_spanwise_vlm(x29_ap, conv_ap, 10.0, "fig3_real_vlm_spanwise_HighRes")
+    # ── Spanwise distribution plots commented out ──────────────────────────
+    # These require a fresh single-point VLM solve and are not part of the
+    # journal submission figures (fig 1, 5, 6). Uncomment to regenerate locally.
+    #
+    # print("Building geometries and running single-point VLM for spanwise plots...")
+    # x29_ap = build_x29()
+    # conv_ap = build_conventional()
+    # _plot_spanwise_theoretical(x29_ap, conv_ap, 10.0, "fig3_spanwise_lift_distribution_HighRes")
+    # _plot_spanwise_vlm(x29_ap, conv_ap, 10.0, "fig3_real_vlm_spanwise_HighRes")
 
     print(f"All done! Check the '{OUTPUT_DIR}' folder for your images and legend text files.")

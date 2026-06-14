@@ -1,11 +1,11 @@
 Legend entries for this figure:
 ----------------------------------------
-- VLM Inviscid (e = 0.872)
-- VLM + Viscous Correction (e = 0.733)
+- VLM Inviscid (e = 0.881)
+- VLM + Viscous Correction (e = 0.748)
 - NASA TP 3414 Flight Data (e = 0.83)
 
 Info Box / Annotations:
 ----------------------------------------
-Inviscid Error: 5.1%
-Corrected Error: 11.7%
-Viscous Factor: 84%
+Inviscid Error: 6.2%
+Corrected Error: 9.9%
+Viscous Factor: 85%
