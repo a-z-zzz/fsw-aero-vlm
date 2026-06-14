@@ -8,7 +8,8 @@ A non-linear Vortex Lattice Method (VLM) Python simulation pipeline for evaluati
 ---
 
 ## Abstract
-This technical note investigates the aerodynamic feasibility of simulating forward-swept wing (FSW) configurations using a Vortex Lattice Method (VLM). The solver was calibrated against Grumman X-29 flight-test data, yielding a corrected span efficiency of e = 0.851, within 2.56% of the NASA TP 3414 reference value. At cruise conditions (C_L= 0.5), the FSW configuration produces an Oswald efficiency of e = 0.854 compared to e = 0.832 for a geometrically identical aft-swept baseline, corresponding to a 3.14% reduction in induced drag. Since induced drag accounts for approximately 40% of total cruise drag, this yields a net drag reduction of roughly 1.24%. When combined with estimates of natural laminar flow (NLF) benefits characteristic of forward-swept geometries, this efficiency gain suggests a meaningful improvement in the baseline lift-to-drag ratio for commercial transport applications.
+The Vortex Lattice Method (VLM), a lightweight computational model, offers faster alternatives for aeronautical modeling than Computational Fluid Dynamics (CFD). However, their accuracy for unconventional designs, like Forward Swept Wings (FSW), is not well-developed. We assess the capability of using a Python-based VLM solver to simulate static aerodynamic behavior of FSW planforms by using the Grumman X-29 as a test case. We simulate the main control surfaces of the Grumman X-29, apply Prandtl-Glauert and viscous corrections, and compare our simulated drag polars and Oswald efficiency factor to published NASA flight data. A geometrically mirrored Aft-Swept Wing (ASW) equivalent is also simulated to isolate theoretical sweep effects. We find that our simulated Oswald efficiency factor (0.743) is 10.5% lower than the NASA flight data (~0.83). However, the solver correctly finds that the forward sweep does not directly alter L/D or induced drag compared to an equivalent ASW under inviscid conditions. VLM can, in summary, approximate general aerodynamic trends, but requires design-specific calibrations to produce more quantitatively accurate findings.
+
 
 ---
 
@@ -23,12 +24,17 @@ The Vortex Lattice Method approximates the lifting surface as a discrete array o
 | Metric | Value |
 |--------|-------|
 | Validation dataset | NASA TP 3414 (Grumman X-29, Mach 0.6) |
-| Corrected span efficiency | $e_{corrected} = 0.851$ |
-| Validation error | 2.56% against NASA reference |
+| VLM Inviscid span efficiency | $e_{inv} = 0.872$ |
+| VLM Corrected span efficiency | $e_{corr} = 0.733$ |
+| Inviscid validation error | 5.1% against NASA reference ($e = 0.83$) |
+| Corrected validation error | 11.7% against NASA reference |
+| Viscous correction factor $k_v$ | 84% (Nita–Scholz method) |
 | FSW Oswald efficiency | $e = 0.854$ |
 | ASW Oswald efficiency | $e = 0.832$ |
-| Induced drag reduction (FSW vs ASW) | 3.14% |
-| Total drag reduction | ~1.26% |
+| Induced drag difference (FSW vs ASW at $C_L = 0.5$) | –0.02% (marginal) |
+| Total Aerodynamic Efficiency ($L/D$) | FSW sustains higher maximum $L/D$ across cruise $C_L$ (see Fig. 6) |
+
+> **Note on validation error:** The 11.7% corrected span efficiency error reflects the Nita–Scholz viscous correction being applied to the wing-only inviscid VLM model. The full configuration (with canard and strakes) is expected to reduce this discrepancy. The inviscid model agrees to within 5.1%.
 
 ---
 
@@ -50,9 +56,9 @@ For high-fidelity mesh generation and RANS verification, ensure `OpenVSP 3.x` an
 
 ## Usage & Execution
 
-### 1. NASA X-29 VLM Validation
+### 1. NASA X-29 VLM Validation (Baseline)
 
-Verifies solver accuracy against NASA TP 3414 flight data and generates spanwise lift distribution and drag polar comparisons:
+Verifies solver accuracy against NASA TP 3414 flight data using the baseline wing-only model, generating spanwise lift distribution and drag polar comparisons:
 ```bash
 python3 x29_vlm_validation.py
 ```
@@ -62,7 +68,18 @@ Expected outputs:
 - Drag polar overlay against NASA reference data
 - Console report of $e_{inviscid}$, $k_v$, $e_{corrected}$, and validation error
 
-### 2. Boeing 737-800 Trade Study
+### 2. X-29 VLM Validation (Full Configuration)
+
+Runs the validation utilizing the complete X-29 geometry, incorporating the closely-coupled canard and leading-edge strakes to capture complex upwash/downwash interactions:
+```bash
+python3 x29_vlm_validation_with_canard.py
+```
+
+Expected outputs:
+- Total aerodynamic efficiency ($L/D$) comparison vs lift coefficient
+- Coupled spanwise lift distributions accounting for canard downwash
+
+### 3. Boeing 737-800 Trade Study
 
 Runs the aerodynamic trade study comparing FSW and ASW configurations of identical planform geometry:
 ```bash
@@ -72,18 +89,18 @@ python3 Aeroscript_FSW/fsw_analysis.py --num_sims 100
 Expected outputs:
 - Induced drag polar comparison at cruise ($C_L = 0.5$)
 - Oswald efficiency summary for FSW and ASW configurations
-- Aerodynamic efficiency comparison plot (L/D$_i$ vs $\alpha$)
+- Aerodynamic efficiency comparison plot ($L/D_i$ vs $ lpha$)
 
 ---
 
-### 3. Generate High-Res and Journal Plots
+### 4. Generate High-Res and Journal Plots
 
 The visual results for publication can be programmatically reproduced by running the export scripts after the main simulation:
 ```bash
 python3 export_journal_plots.py
 python3 export_high_res_plots.py
 ```
-This ensures reproducibility without manual tweaking.
+This ensures reproducibility without manual tweaking, generating clean, monochromatic figures for print and high-fidelity colored figures for digital use.
 
 ---
 
@@ -107,20 +124,16 @@ fsw-aero-vlm/
 
 ## Citation
 
-If you use this code in your research, please cite both the repository and the associated paper:
+If you use this code in your research, please cite the repository:
 ```bibtex
 @misc{zhan2026fswvlm,
   author       = {Zhan, Andy},
-  title        = {fsw-aero-vlm: VLM Simulation Pipeline for Forward-Swept Wing Aerodynamic Analysis},
+  title        = {fsw-aero-vlm},
   year         = {2026},
-  publisher    = {Zenodo},
   doi          = {10.5281/zenodo.XXXXXXX},
   note         = {DOI pending. Repository available at https://github.com/a-z-zzz/fsw-aero-vlm}
 }
 ```
-
----
-
 ## License
 
 This project is licensed under the MIT License. See [`LICENSE`](LICENSE) for details.
