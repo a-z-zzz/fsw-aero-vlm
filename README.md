@@ -56,30 +56,21 @@ For high-fidelity mesh generation and RANS verification, ensure `OpenVSP 3.x` an
 
 ## Usage & Execution
 
-### 1. NASA X-29 VLM Validation (Baseline)
+### 1. X-29 VLM Validation (Full Configuration)
 
-Verifies solver accuracy against NASA TP 3414 flight data using the baseline wing-only model, generating spanwise lift distribution and drag polar comparisons:
-```bash
+Verifies solver accuracy against NASA TP 3414 flight data utilizing the complete X-29 geometry, incorporating the closely-coupled canard and leading-edge strakes to capture complex upwash/downwash interactions:
+
+[bash]
 python3 x29_vlm_validation.py
-```
-
-Expected outputs:
-- Spanwise lift distribution comparison (FSW vs ASW vs elliptical ideal)
-- Drag polar overlay against NASA reference data
-- Console report of $e_{inviscid}$, $k_v$, $e_{corrected}$, and validation error
-
-### 2. X-29 VLM Validation (Full Configuration)
-
-Runs the validation utilizing the complete X-29 geometry, incorporating the closely-coupled canard and leading-edge strakes to capture complex upwash/downwash interactions:
-```bash
-python3 x29_vlm_validation_with_canard.py
-```
+[/bash]
 
 Expected outputs:
 - Total aerodynamic efficiency ($L/D$) comparison vs lift coefficient
 - Coupled spanwise lift distributions accounting for canard downwash
+- Drag polar overlay against NASA reference data
+- Console report of $e_{inviscid}$, $k_v$, $e_{corrected}$, and validation error
 
-### 3. Boeing 737-800 Trade Study
+### 2. Boeing 737-800 Trade Study
 
 Runs the aerodynamic trade study comparing FSW and ASW configurations of identical planform geometry:
 ```bash
@@ -108,7 +99,6 @@ This ensures reproducibility without manual tweaking, generating clean, monochro
 ```
 fsw-aero-vlm/
 ├── x29_vlm_validation.py              # Main X-29 solver validation against NASA TP 3414
-├── x29_vlm_validation_with_canard.py  # VLM with closely-coupled canard and strakes
 ├── export_journal_plots.py            # Reproduces monochromatic journal figures
 ├── export_high_res_plots.py           # Reproduces high-resolution color figures
 ├── data/
