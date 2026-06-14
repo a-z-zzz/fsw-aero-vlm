@@ -1,0 +1,10 @@
+Legend entries for this figure:
+----------------------------------------
+- FSW (X-29, Λ = -29.3°)
+- Conventional ASW (Λ = +29.3°)
+- Elliptic (Ideal)
+
+Info Box / Annotations:
+----------------------------------------
+FSW: Inboard shift reduces tip loading
+ASW: Outboard loading increases tip stall risk

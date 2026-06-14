@@ -54,7 +54,7 @@ For high-fidelity mesh generation and RANS verification, ensure `OpenVSP 3.x` an
 
 Verifies solver accuracy against NASA TP 3414 flight data and generates spanwise lift distribution and drag polar comparisons:
 ```bash
-python3 Aeroscript_FSW/x29_vlm_validation.py
+python3 x29_vlm_validation.py
 ```
 
 Expected outputs:
@@ -76,14 +76,30 @@ Expected outputs:
 
 ---
 
+### 3. Generate High-Res and Journal Plots
+
+The visual results for publication can be programmatically reproduced by running the export scripts after the main simulation:
+```bash
+python3 export_journal_plots.py
+python3 export_high_res_plots.py
+```
+This ensures reproducibility without manual tweaking.
+
+---
+
 ## Repository Structure
 ```
 fsw-aero-vlm/
-├── x29_vlm_validation.py    # X-29 solver validation against NASA TP 3414
+├── x29_vlm_validation.py              # Main X-29 solver validation against NASA TP 3414
+├── x29_vlm_validation_with_canard.py  # VLM with closely-coupled canard and strakes
+├── export_journal_plots.py            # Reproduces monochromatic journal figures
+├── export_high_res_plots.py           # Reproduces high-resolution color figures
 ├── data/
-│   └── x29_vlm_drag_polar_mar22.csv      # FSW Drag Polar raw numbers
+│   ├── x29_vlm_drag_polar_mar22.csv      # FSW Drag Polar raw numbers
 │   └── reg_asw_vlm_drag_polar_mar22.csv  # ASW Drag Polar raw numbers
-├── figures_x29/                     # Generated output figures
+├── figures_x29/                     
+│   ├── journal_figures/               # Output for journal publication
+│   └── legends/                       # Raw text legends
 └── README.md
 ```
 

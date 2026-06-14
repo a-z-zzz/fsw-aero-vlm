@@ -1,0 +1,9 @@
+Legend entries for this figure:
+----------------------------------------
+- VLM Simulation
+- Linear Fit: $C_L$ = 0.0781·α + -0.132
+
+Info Box / Annotations:
+----------------------------------------
+$C_L$$_α$ = 0.0781 /deg
+       = 4.477 /rad

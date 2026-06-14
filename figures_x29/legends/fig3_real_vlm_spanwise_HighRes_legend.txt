@@ -1,0 +1,10 @@
+Legend entries for this figure:
+----------------------------------------
+- FSW (X-29, Λ = -29.3°)
+- ASW (Λ = +29.3°)
+- Elliptic (Ideal, e=1.0)
+
+Info Box / Annotations:
+----------------------------------------
+FSW: Lift centered inboard (Lower root bending stress)
+ASW: Lift centered outboard (Higher root bending stress)

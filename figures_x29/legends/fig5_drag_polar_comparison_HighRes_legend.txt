@@ -1,0 +1,11 @@
+Legend entries for this figure:
+----------------------------------------
+- FSW (X-29, Λ = -29.3°) — e = 0.854
+- ASW (Λ = +29.3°) — e = 0.832
+
+Info Box / Annotations:
+----------------------------------------
+At exactly CL = 0.5:
+  FSW CDi = 0.02939
+  ASW CDi = 0.02938
+  FSW drag advantage: -0.02%

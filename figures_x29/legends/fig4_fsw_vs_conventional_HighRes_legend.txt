@@ -1,0 +1,12 @@
+Legend entries for this figure:
+----------------------------------------
+- FSW (X-29, Λ = -29.3°)
+- Conventional ASW (Λ = +29.3°)
+
+Info Box / Annotations:
+----------------------------------------
+FSW L/Dᵢ Advantage: +4.3%
+(Average over α = 4-10° cruise regime)
+
+FSW Oswald e = 0.854
+ASW Oswald e = 0.832
