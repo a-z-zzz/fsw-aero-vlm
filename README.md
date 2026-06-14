@@ -98,16 +98,20 @@ This ensures reproducibility without manual tweaking, generating clean, monochro
 ## Repository Structure
 ```
 fsw-aero-vlm/
-├── x29_vlm_validation.py              # Main X-29 solver validation against NASA TP 3414
-├── export_journal_plots.py            # Reproduces monochromatic journal figures
-├── export_high_res_plots.py           # Reproduces high-resolution color figures
 ├── data/
 │   ├── x29_vlm_drag_polar_mar22.csv      # FSW Drag Polar raw numbers
 │   └── reg_asw_vlm_drag_polar_mar22.csv  # ASW Drag Polar raw numbers
 ├── figures_x29/                     
-│   ├── journal_figures/               # Output for journal publication
+│   ├── archive/                       # Previous outputs without canard involvement
+│   ├── highres_figures/               # All figures outputted
+│   ├── journal_figures/               # Output figures for journal publication
 │   └── legends/                       # Raw text legends
-└── README.md
+├── .gitignore
+├── LICENSE
+├── README.md
+├── export_journal_plots.py            # Reproduces monochromatic journal figures
+├── export_high_res_plots.py           # Reproduces high-resolution color figures
+└──x29_vlm_validation.py              # Main X-29 solver validation against NASA TP 3414
 ```
 
 ---
